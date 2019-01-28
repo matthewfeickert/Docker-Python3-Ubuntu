@@ -39,6 +39,8 @@ function build_cpython () {
         --enable-optimizations \
         --with-lto \
         --enable-loadable-sqlite-extensions \
+        --enable-ipv6 \
+        --with-threads \
         CXX="${2}"
     printf "\n### make -j${NPROC}\n"
     make -j${NPROC}
