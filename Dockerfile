@@ -22,6 +22,11 @@ RUN apt-get -qq -y update && \
         libssl-dev \
         libbz2-dev \
         libsqlite3-dev \
+        libncurses5-dev \
+        libgdbm-dev \
+        libgdbm-compat-dev \
+        liblzma-dev \
+        libreadline-dev \
         wget \
         curl \
         git \
