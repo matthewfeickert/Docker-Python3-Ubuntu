@@ -59,6 +59,10 @@ RUN useradd -m docker && \
     mkdir /home/docker/data && \
     chown -R --from=root docker /home/docker
 
+# Use C.UTF-8 locale to avoid issues with ASCII encoding
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
 WORKDIR /home/docker/data
 ENV HOME /home/docker
 ENV USER docker
