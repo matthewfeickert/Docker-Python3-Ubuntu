@@ -29,29 +29,37 @@ function build_cpython () {
     # 1: the prefix to be passed to configure
     #    c.f. https://docs.python.org/3/using/unix.html#python-related-paths-and-files
     # 2: the path to the version of gcc to be used
+    # 3: the Python version being built
 
     # https://docs.python.org/3/using/unix.html#building-python
+    # https://github.com/python/cpython/blob/3.7/README.rst
     # https://github.com/python/cpython/blob/3.6/README.rst
     printf "\n### ./configure\n"
-    ./configure --prefix="${1}" \
-        --exec_prefix="${1}" \
-        --with-cxx-main="${2}" \
-        --enable-optimizations \
-        --with-lto \
-        --enable-loadable-sqlite-extensions \
-        --enable-ipv6 \
-        --with-threads \
-        CXX="${2}"
+    if [[ "${3}" > "3.7.0"  ]]; then
+        # --with-threads is removed in Python 3.7 (threading already on)
+        ./configure --prefix="${1}" \
+            --exec_prefix="${1}" \
+            --with-cxx-main="${2}" \
+            --enable-optimizations \
+            --with-lto \
+            --enable-loadable-sqlite-extensions \
+            --enable-ipv6 \
+            CXX="${2}"
+    else
+        ./configure --prefix="${1}" \
+            --exec_prefix="${1}" \
+            --with-cxx-main="${2}" \
+            --enable-optimizations \
+            --with-lto \
+            --enable-loadable-sqlite-extensions \
+            --enable-ipv6 \
+            --with-threads \
+            CXX="${2}"
+    fi
     printf "\n### make -j${NPROC}\n"
     make -j${NPROC}
-    # make install will create symlinks for python3, pip3, and pip
     printf "\n### make install\n"
     make install
-
-    # Link `python` against python3 if no python2 exists
-    if ! command -v python2 >/dev/null 2>&1; then
-        ln -s "${1}"/bin/"python${PYTHON_VERSION_TAG:0:3}" "${1}"/bin/python
-    fi
 }
 
 function update_pip {
@@ -90,7 +98,7 @@ function main() {
     # 1: the Python version tag
     # 2: bool of if should symlink python and pip to python3 versions
 
-    PYTHON_VERSION_TAG=3.6.8 # Switch to 3.7 once Tensorflow is out for it
+    PYTHON_VERSION_TAG=3.7.2
     LINK_PYTHON_TO_PYTHON3=0 # By default don't link so as to reserve python for Python 2
     if [[ $# -gt 0 ]]; then
         PYTHON_VERSION_TAG="${1}"
@@ -103,7 +111,7 @@ function main() {
     NPROC="$(set_num_processors)"
     download_cpython "${PYTHON_VERSION_TAG}"
     cd Python-"${PYTHON_VERSION_TAG}"
-    build_cpython /usr "${CXX_VERSION}"
+    build_cpython /usr "${CXX_VERSION}" "${PYTHON_VERSION_TAG}"
     update_pip
 
     if [[ "${LINK_PYTHON_TO_PYTHON3}" -eq 1 ]]; then
