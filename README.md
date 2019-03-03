@@ -25,6 +25,7 @@ Dockerfile for image built off [Ubuntu 18.04](https://wiki.ubuntu.com/BionicBeav
 - libreadline-dev
 - uuid-dev
 - libffi-dev
+- tk-dev
 - wget
 - curl
 - make
