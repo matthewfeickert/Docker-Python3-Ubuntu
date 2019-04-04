@@ -8,7 +8,7 @@ CXX_VERSION="$(which gcc)"
 
 function download_cpython () {
     # 1: the version tag
-    printf "\n### Downloading CPython source as Python-${1}.tgz\n"
+    printf "\n### Downloading CPython source as Python-%s.tgz\n" "${1}"
     wget "https://www.python.org/ftp/python/${1}/Python-${1}.tgz" &> /dev/null
     tar -xvzf "Python-${1}.tgz" > /dev/null
     rm "Python-${1}.tgz"
@@ -22,7 +22,7 @@ function set_num_processors {
     else
         NPROC="$(grep -c '^processor' /proc/cpuinfo)"
     fi
-    echo `expr "${NPROC}" - 1`
+    echo "$((NPROC - 1))"
 }
 
 function build_cpython () {
@@ -56,8 +56,8 @@ function build_cpython () {
             --with-threads \
             CXX="${2}"
     fi
-    printf "\n### make -j${NPROC}\n"
-    make -j${NPROC}
+    printf "\n### make -j%s\n" "${NPROC}"
+    make -j"${NPROC}"
     printf "\n### make install\n"
     make install
 }
@@ -75,12 +75,15 @@ function update_pip {
 }
 
 function symlink_python_to_python3 {
-    local python_version="$(python3 --version)"
-    local which_python="$(which python3)${python_version:8:-2}"
-    local which_pip="$(which pip3)"
+    local python_version
+    python_version="$(python3 --version)"
+    local which_python
+    which_python="$(which python3)${python_version:8:-2}"
+    local which_pip
+    which_pip="$(which pip3)"
 
     # symlink python to python3
-    printf "\n### ln -s -f ${which_python} ${which_python::-3}\n"
+    printf "\n### ln -s -f %s %s\n" "${which_python}" "${which_python::-3}"
     ln -s -f "${which_python}" "${which_python::-3}"
 
     # symlink pip to pip3 if no pip exists or it is a different version than pip3
@@ -89,7 +92,7 @@ function symlink_python_to_python3 {
             return 0
         fi
     fi
-    printf "\n### ln -s -f ${which_pip} ${which_pip::-1}\n"
+    printf "\n### ln -s -f %s %s\n" "${which_pip}" "${which_pip::-1}"
     ln -s -f "${which_pip}" "${which_pip::-1}"
     return 0
 }
