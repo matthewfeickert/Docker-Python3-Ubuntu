@@ -4,8 +4,6 @@ set -e
 
 # This is being run as root and so sudo is not needed
 
-CXX_VERSION="$(which gcc)"
-
 function download_cpython () {
     # 1: the version tag
     printf "\n### Downloading CPython source as Python-%s.tgz\n" "${1}"
@@ -28,33 +26,28 @@ function set_num_processors {
 function build_cpython () {
     # 1: the prefix to be passed to configure
     #    c.f. https://docs.python.org/3/using/unix.html#python-related-paths-and-files
-    # 2: the path to the version of gcc to be used
-    # 3: the Python version being built
+    # 2: the Python version being built
 
     # https://docs.python.org/3/using/unix.html#building-python
     # https://github.com/python/cpython/blob/3.7/README.rst
     # https://github.com/python/cpython/blob/3.6/README.rst
     printf "\n### ./configure\n"
-    if [[ "${3}" > "3.7.0"  ]]; then
+    if [[ "${2}" > "3.7.0"  ]]; then
         # --with-threads is removed in Python 3.7 (threading already on)
         ./configure --prefix="${1}" \
             --exec_prefix="${1}" \
-            --with-cxx-main="${2}" \
             --enable-optimizations \
             --with-lto \
             --enable-loadable-sqlite-extensions \
-            --enable-ipv6 \
-            CXX="${2}"
+            --enable-ipv6
     else
         ./configure --prefix="${1}" \
             --exec_prefix="${1}" \
-            --with-cxx-main="${2}" \
             --enable-optimizations \
             --with-lto \
             --enable-loadable-sqlite-extensions \
             --enable-ipv6 \
-            --with-threads \
-            CXX="${2}"
+            --with-threads
     fi
     printf "\n### make -j%s\n" "${NPROC}"
     make -j"${NPROC}"
@@ -114,7 +107,7 @@ function main() {
     NPROC="$(set_num_processors)"
     download_cpython "${PYTHON_VERSION_TAG}"
     cd Python-"${PYTHON_VERSION_TAG}"
-    build_cpython /usr "${CXX_VERSION}" "${PYTHON_VERSION_TAG}"
+    build_cpython /usr "${PYTHON_VERSION_TAG}"
     update_pip
 
     if [[ "${LINK_PYTHON_TO_PYTHON3}" -eq 1 ]]; then
