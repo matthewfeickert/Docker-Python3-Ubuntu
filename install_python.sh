@@ -29,6 +29,7 @@ function build_cpython () {
     # 2: the Python version being built
 
     # https://docs.python.org/3/using/unix.html#building-python
+    # https://github.com/python/cpython/blob/3.8/README.rst
     # https://github.com/python/cpython/blob/3.7/README.rst
     # https://github.com/python/cpython/blob/3.6/README.rst
     printf "\n### ./configure\n"
@@ -51,6 +52,8 @@ function build_cpython () {
     fi
     printf "\n### make -j%s\n" "${NPROC}"
     make -j"${NPROC}"
+    printf "\n### make -j%s test\n" "${NPROC}"
+    make -j"${NPROC}" test
     printf "\n### make install\n"
     make install
 }
@@ -94,7 +97,7 @@ function main() {
     # 1: the Python version tag
     # 2: bool of if should symlink python and pip to python3 versions
 
-    PYTHON_VERSION_TAG=3.7.4
+    PYTHON_VERSION_TAG=3.8.0
     LINK_PYTHON_TO_PYTHON3=0 # By default don't link so as to reserve python for Python 2
     if [[ $# -gt 0 ]]; then
         PYTHON_VERSION_TAG="${1}"
