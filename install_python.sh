@@ -15,7 +15,7 @@ function download_cpython () {
 function set_num_processors {
     # Set the number of processors used for build
     # to be 1 less than are available
-    if [[ -f "$(which nproc)" ]]; then
+    if [[ -f "$(command -v nproc)" ]]; then
         NPROC="$(nproc)"
     else
         NPROC="$(grep -c '^processor' /proc/cpuinfo)"
@@ -74,16 +74,16 @@ function symlink_python_to_python3 {
     local python_version
     python_version="$(python3 --version)"
     local which_python
-    which_python="$(which python3)${python_version:8:-2}"
+    which_python="$(command -v python3)${python_version:8:-2}"
     local which_pip
-    which_pip="$(which pip3)"
+    which_pip="$(command -v pip3)"
 
     # symlink python to python3
     printf "\n### ln -s -f %s %s\n" "${which_python}" "${which_python::-3}"
     ln -s -f "${which_python}" "${which_python::-3}"
 
     # symlink pip to pip3 if no pip exists or it is a different version than pip3
-    if [[ ! -z "$(which pip)" ]]; then
+    if [[ -n "$(command -v pip)" ]]; then
         if [[ "$(pip --version)" = "$(pip3 --version)" ]]; then
             return 0
         fi
