@@ -32,11 +32,14 @@ function build_cpython () {
     # https://github.com/python/cpython/blob/3.8/README.rst
     # https://github.com/python/cpython/blob/3.7/README.rst
     # https://github.com/python/cpython/blob/3.6/README.rst
+    printf "\n### ./configure --help\n"
+    ./configure --help
     printf "\n### ./configure\n"
     if [[ "${2}" > "3.7.0"  ]]; then
         # --with-threads is removed in Python 3.7 (threading already on)
         ./configure --prefix="${1}" \
             --exec_prefix="${1}" \
+            --with-ensurepip \
             --enable-optimizations \
             --with-lto \
             --enable-loadable-sqlite-extensions \
@@ -44,6 +47,7 @@ function build_cpython () {
     else
         ./configure --prefix="${1}" \
             --exec_prefix="${1}" \
+            --with-ensurepip \
             --enable-optimizations \
             --with-lto \
             --enable-loadable-sqlite-extensions \
