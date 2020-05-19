@@ -14,7 +14,6 @@ ARG LINK_PYTHON_TO_PYTHON3=1
 # https://github.com/pypa/pip/issues/4924#issuecomment-435825490
 # Set (temporarily) DEBIAN_FRONTEND to avoid interacting with tzdata
 RUN apt-get -qq -y update && \
-    apt-get -qq -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get -qq -y install \
         gcc \
         g++ \
