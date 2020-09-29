@@ -40,7 +40,7 @@ RUN apt-get -qq -y update && \
     mv /usr/bin/lsb_release /usr/bin/lsb_release.bak && \
     apt-get -y autoclean && \
     apt-get -y autoremove && \
-    rm -rf /var/lib/apt-get/lists/*
+    rm -rf /var/lib/apt/lists/*
 
 COPY install_python.sh install_python.sh
 RUN bash install_python.sh ${PYTHON_VERSION_TAG} ${LINK_PYTHON_TO_PYTHON3} && \
