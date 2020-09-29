@@ -1,6 +1,4 @@
-FROM ubuntu:bionic
-
-MAINTAINER Matthew Feickert <matthewfeickert@users.noreply.github.com>
+FROM ubuntu:20.04
 
 USER root
 WORKDIR /root
