@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  # Run weekly at 0:01 UTC
+  schedule:
+  - cron:  '1 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Docker image
+      uses: docker/build-push-action@v1
+      with:
+        repository: matthewfeickert/docker-python3-ubuntu
+        dockerfile: Dockerfile
+        tags: test
+        tag_with_sha: true
+        tag_with_ref: true
+        push: false
+    - name: List built images
+      run: docker images
