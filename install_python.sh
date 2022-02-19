@@ -29,6 +29,7 @@ function build_cpython () {
     # 2: the Python version being built
 
     # https://docs.python.org/3/using/unix.html#building-python
+    # https://github.com/python/cpython/blob/3.9/README.rst
     # https://github.com/python/cpython/blob/3.8/README.rst
     # https://github.com/python/cpython/blob/3.7/README.rst
     # https://github.com/python/cpython/blob/3.6/README.rst
