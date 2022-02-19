@@ -79,7 +79,7 @@ function symlink_python_to_python3 {
     local python_version
     python_version="$(python3 --version)"
     local which_python
-    which_python="$(command -v python3)${python_version:8:-2}"
+    which_python="$(command -v python3)${python_version:8:2}"
     local which_pip
     which_pip="$(command -v pip3)"
 
