@@ -67,11 +67,11 @@ function update_pip {
     # Update pip, setuptools, and wheel
     if [[ "$(id -u)" -eq 0 ]]; then
         # If root
-        printf "\n### pip3 install --upgrade --no-cache-dir pip setuptools wheel\n"
-        pip3 install --upgrade --no-cache-dir pip setuptools wheel
+        printf "\n### python3 -m pip --no-cache-dir install --upgrade pip setuptools wheel\n"
+        python3 -m pip --no-cache-dir install --upgrade pip setuptools wheel
     else
-        printf "\n### pip3 install --user --upgrade --no-cache-dir pip setuptools wheel\n"
-        pip3 install --user --upgrade --no-cache-dir pip setuptools wheel
+        printf "\n### python3 -m pip --no-cache-dir install --user --upgrade pip setuptools wheel\n"
+        python3 -m pip --no-cache-dir install --user --upgrade pip setuptools wheel
     fi
 }
 
