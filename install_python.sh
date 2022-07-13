@@ -29,6 +29,7 @@ function build_cpython () {
     # 2: the Python version being built
 
     # https://docs.python.org/3/using/unix.html#building-python
+    # https://github.com/python/cpython/blob/3.10/README.rst
     # https://github.com/python/cpython/blob/3.9/README.rst
     # https://github.com/python/cpython/blob/3.8/README.rst
     # https://github.com/python/cpython/blob/3.7/README.rst
@@ -102,7 +103,7 @@ function main() {
     # 1: the Python version tag
     # 2: bool of if should symlink python and pip to python3 versions
 
-    PYTHON_VERSION_TAG=3.9.10
+    PYTHON_VERSION_TAG=3.10.5
     LINK_PYTHON_TO_PYTHON3=0 # By default don't link so as to reserve python for Python 2
     if [[ $# -gt 0 ]]; then
         PYTHON_VERSION_TAG="${1}"
