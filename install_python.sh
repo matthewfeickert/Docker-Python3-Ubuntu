@@ -85,8 +85,8 @@ function symlink_python_to_python3 {
     which_pip="$(command -v pip3)"
 
     # symlink python to python3
-    printf "\n### ln -s -f %s %s\n" "${which_python}" "${which_python::-3}"
-    ln -s -f "${which_python}" "${which_python::-3}"
+    printf "\n### ln --symbolic --force %s %s\n" "${which_python}" "${which_python::-1}"
+    ln --symbolic --force "${which_python}" "${which_python::-1}"
 
     # symlink pip to pip3 if no pip exists or it is a different version than pip3
     if [[ -n "$(command -v pip)" ]]; then
@@ -94,8 +94,8 @@ function symlink_python_to_python3 {
             return 0
         fi
     fi
-    printf "\n### ln -s -f %s %s\n" "${which_pip}" "${which_pip::-1}"
-    ln -s -f "${which_pip}" "${which_pip::-1}"
+    printf "\n### ln --symbolic --force %s %s\n" "${which_pip}" "${which_pip::-1}"
+    ln --symbolic --force "${which_pip}" "${which_pip::-1}"
     return 0
 }
 
