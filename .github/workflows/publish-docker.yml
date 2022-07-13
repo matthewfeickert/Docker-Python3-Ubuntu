@@ -23,7 +23,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: matthewfeickert/docker-python3-ubuntu
         dockerfile: Dockerfile
-        tags: latest,3.10.4
+        tags: latest,3.10.5
     - name: Build and Publish to Registry with Release Tag
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v1
